@@ -2,29 +2,17 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Mapa Interativo de Bosques Urbanos – São Paulo</title>
+  <title>Mapa Bosques Urbanos – São Paulo</title>
 
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      font-family: Arial, sans-serif;
-    }
-
-    #map {
-      width: 100%;
-      height: 600px;
-    }
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
+    #map { width: 100%; height: 600px; }
   </style>
 </head>
 
 <body>
-
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -34,36 +22,38 @@
 
   // Estilo de mapa mais clean (CartoDB Positron)
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a> &copy; OpenStreetMap',
+    attribution: '&copy; CARTO & OpenStreetMap',
     maxZoom: 19,
   }).addTo(map);
 
-  // Ícone de árvore para marcar os bosques
+  // Ícone de árvore para os marcadores
   const treeIcon = L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/427/427735.png', // ícone de árvore
-    iconSize: [32, 40],  // tamanho ajustado
-    iconAnchor: [16, 40], // ponto de ancoragem
-    popupAnchor: [0, -35] // posição do popup
+    iconUrl: 'https://iconduck.com/icons/download/22502/tree-256.png', 
+    iconSize: [32, 32],      // tamanho do ícone
+    iconAnchor: [16, 32],    // ponto que fica sobre as coordenadas
+    popupAnchor: [0, -30]    // posição do popup acima do ícone
   });
 
   const bosques = [
-    { name:"Asa-Branca", coords:[-23.615,-46.380] },
-    { name:"Beija-Flor", coords:[-23.620,-46.615] },
-    { name:"Cambacica", coords:[-23.620,-46.620] },
-    { name:"Corruíra", coords:[-23.590,-46.630] },
-    { name:"Tuim", coords:[-23.620,-46.620] },
-    { name:"Periquito", coords:[-23.620,-46.620] },
-    { name:"Garça", coords:[-23.590,-46.630] },
-    { name:"Curicaca", coords:[-23.590,-46.630] },
-    { name:"Maritacas", coords:[-23.610,-46.640] },
-    { name:"Bosque Canário", coords:[-23.617,-46.635] }
+    { name: "Asa-Branca", coords: [-23.6040, -46.4240] },
+    { name: "Beija-Flor", coords: [-23.5896, -46.5982] },
+    { name: "Cambacica", coords: [-23.5291, -46.6674] },
+    { name: "Corruíra", coords: [-23.5470, -46.6310] },
+    { name: "Tuim", coords: [-23.5291, -46.6674] },
+    { name: "Periquito", coords: [-23.5291, -46.6674] },
+    { name: "Garça", coords: [-23.5470, -46.6310] },
+    { name: "Curicaca", coords: [-23.5470, -46.6310] },
+    { name: "Maritacas", coords: [-23.5599, -46.6794] },
+    { name: "Bosque Canário", coords: [-23.6246, -46.6434] },
+    { name: "Bosque Macuco", coords: [-23.4977, -46.6220] }
   ];
 
   bosques.forEach(b => {
     L.marker(b.coords, { icon: treeIcon })
-     .addTo(map)
-     .bindPopup(`<strong>${b.name}</strong>`);
+      .addTo(map)
+      .bindPopup(`<strong>${b.name}</strong>`);
   });
 </script>
+
 </body>
 </html>
