@@ -5,35 +5,27 @@
   <title>Mapa Bosques Urbanos – São Paulo</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
   <style>
     html, body { margin: 0; padding: 0; width: 100%; height: 100%; }
     #map { width: 100%; height: 600px; }
   </style>
 </head>
-
 <body>
+
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script>
+  // Cria o mapa
   const map = L.map('map').setView([-23.55, -46.63], 11);
 
-  // Estilo de mapa mais clean (CartoDB Positron)
+  // Mapa de fundo clean (CartoDB Positron)
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
     attribution: '&copy; CARTO & OpenStreetMap',
     maxZoom: 19,
   }).addTo(map);
 
-  // Ícone de árvore para os marcadores
-  const treeIcon = L.icon({
-    iconUrl: 'https://images.icon-icons.com/38/PNG/512/tree_5186.png', 
-    iconSize: [32, 32],      // tamanho do ícone
-    iconAnchor: [16, 32],    // ponto que fica sobre as coordenadas
-    popupAnchor: [0, -30]    // posição do popup acima do ícone
-  });
-
+  // Dados dos Bosques com coordenadas aproximadas
   const bosques = [
     { name: "Asa-Branca", coords: [-23.6040, -46.4240] },
     { name: "Beija-Flor", coords: [-23.5896, -46.5982] },
@@ -48,11 +40,13 @@
     { name: "Bosque Macuco", coords: [-23.4977, -46.6220] }
   ];
 
+  // Adiciona marcadores
   bosques.forEach(b => {
-    L.marker(b.coords, { icon: treeIcon })
+    L.marker(b.coords)
       .addTo(map)
       .bindPopup(`<strong>${b.name}</strong>`);
   });
+
 </script>
 
 </body>
