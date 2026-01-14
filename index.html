@@ -16,37 +16,81 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // Cria o mapa
   const map = L.map('map').setView([-23.55, -46.63], 11);
 
-  // Mapa de fundo clean (CartoDB Positron)
+  // Mapa com visual mais clean
   L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
     attribution: '&copy; CARTO & OpenStreetMap',
     maxZoom: 19,
   }).addTo(map);
 
-  // Dados dos Bosques com coordenadas aproximadas
+  // Lista de bosques com coordenadas e descrições oficiais
   const bosques = [
-    { name: "Asa-Branca", coords: [-23.6040, -46.4240] },
-    { name: "Beija-Flor", coords: [-23.5896, -46.5982] },
-    { name: "Cambacica", coords: [-23.5291, -46.6674] },
-    { name: "Corruíra", coords: [-23.5470, -46.6310] },
-    { name: "Tuim", coords: [-23.5291, -46.6674] },
-    { name: "Periquito", coords: [-23.5291, -46.6674] },
-    { name: "Garça", coords: [-23.5470, -46.6310] },
-    { name: "Curicaca", coords: [-23.5470, -46.6310] },
-    { name: "Maritacas", coords: [-23.5599, -46.6794] },
-    { name: "Bosque Canário", coords: [-23.6246, -46.6434] },
-    { name: "Bosque Macuco", coords: [-23.4977, -46.6220] }
+    {
+      name: "Asa-Branca",
+      coords: [-23.6040, -46.4240],
+      local: "Próximo ao Terminal Cidade Tiradentes"
+    },
+    {
+      name: "Beija-Flor",
+      coords: [-23.5896, -46.5982],
+      local: "Túnel Maria Maluf"
+    },
+    {
+      name: "Cambacica",
+      coords: [-23.5291, -46.6674],
+      local: "Ponte Bandeiras"
+    },
+    {
+      name: "Corruíra",
+      coords: [-23.5470, -46.6310],
+      local: "Ponte Cruzeiro do Sul"
+    },
+    {
+      name: "Tuim",
+      coords: [-23.5291, -46.6674],
+      local: "Ponte Bandeiras"
+    },
+    {
+      name: "Periquito",
+      coords: [-23.5291, -46.6674],
+      local: "Ponte Bandeiras"
+    },
+    {
+      name: "Garça",
+      coords: [-23.5470, -46.6310],
+      local: "Ponte Cruzeiro do Sul"
+    },
+    {
+      name: "Curicaca",
+      coords: [-23.5470, -46.6310],
+      local: "Ponte Cruzeiro do Sul"
+    },
+    {
+      name: "Maritacas",
+      coords: [-23.5599, -46.6794],
+      local: "Ligação Leste Oeste"
+    },
+    {
+      name: "Bosque Canário",
+      coords: [-23.6246, -46.6434],
+      local: "Avenida 23 de Maio, entorno do Viaduto Dr. Manuel José Chaves"
+    },
+    {
+      name: "Bosque Macuco",
+      coords: [-23.4977, -46.6220],
+      local: "Ponte Presidente Jânio Quadros"
+    }
   ];
 
-  // Adiciona marcadores
+  // Adiciona marcadores e popups
   bosques.forEach(b => {
     L.marker(b.coords)
       .addTo(map)
-      .bindPopup(`<strong>${b.name}</strong>`);
+      .bindPopup(
+        `<strong>${b.name}</strong><br>${b.local}`
+      );
   });
-
 </script>
 
 </body>
