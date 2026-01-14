@@ -2,8 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Mapa Bosques Urbanos – São Paulo</title>
+  <title>Mapa Interativo de Bosques Urbanos – São Paulo</title>
 
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
   <style>
@@ -12,42 +13,191 @@
       padding: 0;
       width: 100%;
       height: 100%;
+      font-family: Arial, sans-serif;
     }
+
+    /* MAPA */
     #map {
       width: 100%;
       height: 600px;
     }
+
+    /* CARTÕES */
+    .cards-container {
+      position: relative;
+      width: 100%;
+      pointer-events: none;
+      margin-top: -600px;
+    }
+
+    .card {
+      position: absolute;
+      width: 230px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      padding-bottom: 8px;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+
+    .card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .card .title {
+      font-weight: bold;
+      color: #2a5d34;
+      font-size: 15px;
+      margin: 6px 8px 0 8px;
+    }
+
+    .card .loc {
+      color: #555;
+      font-size: 13px;
+      margin: 2px 8px;
+    }
+
+    /* POSIÇÕES */
+    .pos-top-left { top: 10px; left: 10px; }
+    .pos-top-center { top: 10px; left: calc(50% - 115px); }
+    .pos-top-right { top: 10px; right: 10px; }
+    .pos-left { top: 160px; left: 10px; }
+    .pos-right { top: 160px; right: 10px; }
+    .pos-bottom-left { bottom: 10px; left: 10px; }
+    .pos-bottom-center { bottom: 10px; left: calc(50% - 115px); }
+    .pos-bottom-right { bottom: 10px; right: 10px; }
   </style>
 </head>
 
 <body>
 
 <div id="map"></div>
+<div class="cards-container" id="cards"></div>
 
+<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
+  // Inicializa o mapa
   const map = L.map('map').setView([-23.55, -46.63], 11);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
+  // Ícone personalizado (ícone de árvore)
+  const treeIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/427/427735.png',
+    iconSize: [32, 37],
+    iconAnchor: [16, 37],
+    popupAnchor: [0, -30],
+  });
+
+  // Dados dos bosques
   const bosques = [
-    { name:"Asa-Branca", coords:[-23.615,-46.380] },
-    { name:"Beija-Flor", coords:[-23.620,-46.615] },
-    { name:"Cambacica", coords:[-23.620,-46.620] },
-    { name:"Corruíra", coords:[-23.590,-46.630] },
-    { name:"Tuim", coords:[-23.620,-46.620] },
-    { name:"Periquito", coords:[-23.620,-46.620] },
-    { name:"Garça", coords:[-23.590,-46.630] },
-    { name:"Curicaca", coords:[-23.590,-46.630] },
-    { name:"Maritacas", coords:[-23.610,-46.640] },
-    { name:"Bosque Canário", coords:[-23.617,-46.635] }
+    {
+      name: "Asa-Branca",
+      locText: "Terminal Cidade Tiradentes",
+      coords: [-23.615, -46.380],
+      image: "https://via.placeholder.com/300x200?text=Asa-Branca",
+      pos: "pos-top-left"
+    },
+    {
+      name: "Beija-Flor",
+      locText: "Túnel Maria Maluf",
+      coords: [-23.620, -46.615],
+      image: "https://via.placeholder.com/300x200?text=Beija-Flor",
+      pos: "pos-top-center"
+    },
+    {
+      name: "Cambacica",
+      locText: "Ponte das Bandeiras",
+      coords: [-23.620, -46.620],
+      image: "https://via.placeholder.com/300x200?text=Cambacica",
+      pos: "pos-top-right"
+    },
+    {
+      name: "Corruíra",
+      locText: "Ponte Cruzeiro do Sul",
+      coords: [-23.590, -46.630],
+      image: "https://via.placeholder.com/300x200?text=Corruira",
+      pos: "pos-left"
+    },
+    {
+      name: "Tuim",
+      locText: "Ponte Bandeiras",
+      coords: [-23.620, -46.620],
+      image: "https://via.placeholder.com/300x200?text=Tuim",
+      pos: "pos-right"
+    },
+    {
+      name: "Periquito",
+      locText: "Ponte Bandeiras",
+      coords: [-23.620, -46.620],
+      image: "https://via.placeholder.com/300x200?text=Periquito",
+      pos: "pos-bottom-left"
+    },
+    {
+      name: "Garça",
+      locText: "Ponte Cruzeiro do Sul",
+      coords: [-23.590, -46.630],
+      image: "https://via.placeholder.com/300x200?text=Garca",
+      pos: "pos-bottom-center"
+    },
+    {
+      name: "Curicaca",
+      locText: "Ponte Cruzeiro do Sul",
+      coords: [-23.590, -46.630],
+      image: "https://via.placeholder.com/300x200?text=Curicaca",
+      pos: "pos-bottom-right"
+    },
+    {
+      name: "Maritacas",
+      locText: "Ligação Leste Oeste",
+      coords: [-23.610, -46.640],
+      image: "https://via.placeholder.com/300x200?text=Maritacas",
+      pos: "pos-left"
+    },
+    {
+      name: "Bosque Canário",
+      locText: "Av. 23 de Maio",
+      coords: [-23.617, -46.635],
+      image: "https://via.placeholder.com/300x200?text=Canario",
+      pos: "pos-right"
+    }
   ];
 
   bosques.forEach(b => {
-    L.marker(b.coords).addTo(map).bindPopup(b.name);
+    // adiciona ícone ao mapa
+    const marker = L.marker(b.coords, { icon: treeIcon }).addTo(map);
+    marker.bindPopup(`<strong>${b.name}</strong><br>${b.locText}`);
+
+    // cria o cartão
+    const card = document.createElement('div');
+    card.className = `card ${b.pos}`;
+    card.innerHTML = `
+      <img src="${b.image}" alt="${b.name}">
+      <div class="title">${b.name}</div>
+      <div class="loc">${b.locText}</div>
+    `;
+
+    card.addEventListener('click', () => {
+      map.setView(b.coords, 14);
+      marker.openPopup();
+    });
+
+    document.getElementById('cards').appendChild(card);
   });
 </script>
 
